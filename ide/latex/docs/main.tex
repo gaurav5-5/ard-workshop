@@ -1,0 +1,262 @@
+\documentclass[a4paper,11pt]{article}
+
+% Set page size and margins
+\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%Karnaugh Maps
+\usepackage{karnaugh-map}
+
+% TOC
+\usepackage{titlesec}
+
+% Lists
+\usepackage{enumitem}
+
+% Tables
+\usepackage{tabularx}
+
+% Code rendering
+\usepackage{listings}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor={black},citecolor={blue!80!black},urlcolor={blue!80!black}]{hyperref}
+
+% Custom shorthands
+%% Table cmds
+\newcommand\HSPC{\rule{0pt}{4ex}\rule[-2.0ex]{0pt}{0pt}}
+\newcommand\RSPC{\rule{0pt}{2.5ex}\rule[-1.25ex]{0pt}{0pt}}
+
+%% Math cmds
+\newcommand{\mathfsc}[2]{#1#2\normalsize}
+
+% Code bloc styling
+\lstdefinestyle{myStyle}{
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numbersep=10pt,
+    numberstyle=\normalsize\color{gray!80!black},
+    basicstyle=\large\ttfamily,
+    keywordstyle=\bfseries\color[HTML]{FE4A49},
+    commentstyle=\itshape\color[HTML]{A6A6A8},
+    identifierstyle=\color[HTML]{2AB7CA},
+    backgroundcolor=\color[HTML]{F4F4F8},
+    stringstyle=\color[HTML]{FED766}
+}
+
+
+\title{\textbf{Evaluation of Minterm Expression}}
+\author{Gaurav Prajapati}
+
+\begin{document}
+\date{}
+\maketitle
+
+% Make Table of contents from Sections
+\tableofcontents
+
+% Problem Statement
+\newpage
+\section{Problem}
+\label{sec:ques}
+\textbf{(GATE CS-2014 SET-3)}\\
+\textbf{Q.7} Consider the Following Minterm expression for F:
+    \mathfsc{\large}{\[\mathtt{F (P,Q,R,S) = \sum 0,2,5,7,8,10,13,15}\]}
+The minterms 2,7,8 and 13 are \textit{'do not care'} terms. The minimal sum-of-products form for F is
+\begin{enumerate}[label=(\Alph*)]
+    \item \mathfsc{\large}{\(\mathtt{Q\Bar{S} + \Bar{Q}S}\)}
+    \item \mathfsc{\large}{\(\mathtt{\Bar{Q}\Bar{S} + QS}\)}
+    \item \mathfsc{\large}{\(\mathtt{\Bar{Q}\Bar{R}\Bar{S} + \Bar{Q}R\Bar{S} + Q\Bar{R}S + QRS}\)}
+    \item \mathfsc{\large}{\(\mathtt{\Bar{P}\Bar{Q}\Bar{S} + \Bar{P}QS + PQS + P\Bar{Q}\Bar{S}}\)}
+\end{enumerate}
+\bigskip
+
+\section{Introduction}
+\paragraph{}
+For a given set of Boolean Logic Inputs, we can define the following terms:
+\begin{itemize}
+    \item \textbf{Minterm} is a boolean expression resulting in an output of 1 for the minimum number of cells in a Karnaugh-Map (K-Map) and 0 in other cells.
+    \item \textbf{Sum of Products} is a boolean expression for the \textit{Sum} (OR) of various \textit{Product} (AND) terms.
+    \item \textbf{'do not care'} terms for a boolean expression are the set of input values for which the output of the function does not matter. The value for these can be taken as 0 or 1 by choice
+\end{itemize}
+\bigskip
+
+% Components used
+\section{Components}
+\begin{table}[ht]
+\centering
+\begin{tabularx}{0.8\textwidth} {
+    | >{\raggedright\arraybackslash}X
+    | >{\centering\arraybackslash}X
+    | >{\centering\arraybackslash}X 
+    |
+}
+    \hline
+    \centering\textbf{\large Component} & \textbf{\large Value} & \textbf{\large Quantity} \HSPC \\
+    \hline
+    Arduino & UNO & 1 \RSPC \\
+    \hline
+    Breadboard & - & 1 \RSPC \\
+    \hline
+    LED & - & 1 \RSPC \\
+    \hline
+    Jumper Wires & M-M & 10 \RSPC \\
+    \hline
+    Resistor & 220 $\Omega$ & 1 \RSPC \\
+    \hline
+\end{tabularx}
+\caption{Table of Components}
+\label{table:1}
+\end{table}
+\bigskip
+
+\newpage
+\section{Solution}
+\subsection{Karnaugh Map}
+\begingroup
+\large
+\begin{math}
+\label{eq:F_q}
+    \mathtt{
+        F(P,Q,R,S) = \sum(0,2,5,7,8,10,13,15) + d(2,7,8,13)
+        }
+\end{math}
+\medskip
+\centering
+\begin{karnaugh-map}[4][4][1][$Q$][$P$][$S$][$R$]
+
+% Filling K-Map
+\terms{2,7,8,13}{X} % don't care terms
+\minterms{0,2,5,7,8,10,13,15} % minterm eq
+\autoterms[0] % set unfilled to 0
+
+% K-Map groups
+\implicant{5}{15}
+\implicantcorner
+
+\end{karnaugh-map}\par
+\large\raggedright The above K-Map can be simplified to:
+\begin{equation}
+    \label{eq:Fsimple}
+    \LARGE
+    \mathtt{
+        F = \overline{Q} \cdot \overline{S} + Q \cdot S
+        }
+\end{equation}
+\par\large\raggedright
+Therefore, the answer is \hyperref[sec:ques]{\textbf{(A)}}
+
+\endgroup
+\bigskip
+
+% Truth Table obtained from K-Map simplification
+\subsection{Truth Table}
+\label{sec:ttf}
+\begin{table}[ht]
+\centering
+\begin{tabularx}{1\textwidth}{
+| >{\centering\arraybackslash}X
+| >{\centering\arraybackslash}X
+| >{\centering\arraybackslash}X
+| >{\centering\arraybackslash}X
+| >{\centering\arraybackslash}X |
+}
+\hline
+\HSPC
+\large
+    \textbf{P} & \large\textbf{Q} & \large\textbf{R} & \large\textbf{S} & \large\textbf{F} \\
+\hline
+     0&0&0&0&1 \RSPC \\
+     0&0&0&1&0 \RSPC \\
+     0&0&1&0&1 \RSPC \\
+     0&0&1&1&0 \RSPC \\
+     0&1&0&0&0 \RSPC \\
+     0&1&0&1&1 \RSPC \\
+     0&1&1&0&0 \RSPC \\
+     0&1&1&1&1 \RSPC \\
+     1&0&0&0&1 \RSPC \\
+     1&0&0&1&0 \RSPC \\
+     1&0&1&0&1 \RSPC \\
+     1&0&1&1&0 \RSPC \\
+     1&1&0&0&0 \RSPC \\
+     1&1&0&1&1 \RSPC \\
+     1&1&1&0&0 \RSPC \\
+     1&1&1&1&1 \RSPC \\
+\hline
+\end{tabularx}
+\caption{Truth Table for \hyperref[eq:Fsimple]{F}}
+\label{tab:ttf}
+\end{table}
+\bigskip
+
+% Connections
+\newpage
+\section{Connections}
+    \subsection{LED to Arduino}
+        LED connections to Arduino are as follows:
+        \begin{table}[ht]
+            \centering
+            \begin{tabular}{|c |c |c |c |}
+            \hline
+                \textbf{Arduino} & 2 & GND \HSPC \\
+            \hline
+                \textbf{LED} & + & - \HSPC \\ 
+            \hline
+            \end{tabular}
+            \caption{LED Connections}
+            \label{tab:cnct_led}
+        \end{table}
+        
+    \subsection{Input Pins to Arduino} {
+        Input Pin Connections to Arduino are as follows:
+        \begin{table}[ht]
+            \centering
+            \begin{tabular}{|c |c |c |c |c |}
+            \hline
+                \textbf{Arduino} & D6 & D7 & D8 & D9 \HSPC \\
+            \hline
+                \textbf{Term} & P & Q & R & S \HSPC \\
+            \hline
+            \end{tabular}
+            \caption{Input Pin Connections}
+            \label{tab:cnct_ip}
+        \end{table}
+    }
+    
+\subsection{Setting Input Pin Values}
+        The values of the Input pins are taken by connecting them to either $5V$ or GND according to \hyperref[sec:ttf]{Truth Table}
+\bigskip    
+
+\newpage
+\section{Code}
+\subsection{main.cpp}
+The Arduino implementation uses the following code:
+% reading code from main.cpp stored in ide/latex/src
+\begin{center}
+    \lstinputlisting[
+    language=C++,
+    style=myStyle
+    ]{../codes/src/main.cpp}
+\end{center}
+
+% Link to Github repository
+\subsection{Repository}
+Code is also available online at the following repository:
+\begin{center}
+    \setlength{\fboxsep}{1em}
+    \fbox{
+        \parbox{0.9\textwidth}{
+            \centering
+            \small
+            \textbf{
+                \url{https://github.com/gaurav5-5/ard-workshop/tree/main/ide/latex/codes}
+            }
+        }
+    }
+    
+\end{center}
+
+\end{document}
