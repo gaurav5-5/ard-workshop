@@ -1,7 +1,7 @@
 # Digital Design with Arduino
 -----------------------------
 Code and Documentation of final GATE Question Implementation for Digita Design with Arduino Workshop
-- [Documentation](/ide/docs/main.pdf)
+- [Project Report](/ide/docs/main.pdf)
 - [Source Code](/ide/codes/src/main.cpp)
 ---
 ## Dependencies
